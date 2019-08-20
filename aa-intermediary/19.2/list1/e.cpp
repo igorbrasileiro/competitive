@@ -4,11 +4,11 @@ using namespace std;
 #define MAX(a,b,c) max(max(a,b),c)
 
 struct Node {
-  int left_value;
-  ll left_frequency;
-  ll frequency;
-  int right_value;
-  ll right_frequency;
+  int left_value = 0;
+  ll left_frequency = 0;
+  ll frequency = 0;
+  int right_value = 0;
+  ll right_frequency = 0;
 };
 
 Node func(Node &l, Node &r) {
@@ -44,8 +44,8 @@ void build(vector<Node> &sgtree, int n, int l, int r, vector<int> &input) {
     node.left_frequency = 1;
     node.right_frequency = 1;
     node.frequency = 1;
-    node.left_value = input[l];
-    node.right_value = input[l];
+    node.left_value = input[l - 1];
+    node.right_value = input[l - 1];
     sgtree[n] = node;
   } else {
     int m = (l + r) / 2;
@@ -60,13 +60,11 @@ Node query(vector<Node> &sgtree, int n, int l, int r, int x, int y) {
     return sgtree[n];
   } else if (y < l || r < x) {
     Node node = Node();
-    node.frequency=node.left_frequency=node.right_frequency=node.right_value=node.left_value=0;
     return node;
   } else {
     int m = (l + r) / 2;
     Node left = query(sgtree, 2 * n, l, m, x, y);
     Node right = query(sgtree, 2 * n + 1, m + 1, r, x, y);
-
     return func(left, right);
   }
 }
