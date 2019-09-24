@@ -12,18 +12,15 @@ Tree* remove(Tree *tree) {
     return NULL;
   }
 
-  Tree *left;
-  Tree *right;
   if (tree->left != NULL) {
-    left = remove(tree->left);
-    if(left == NULL) tree->left = NULL;
-  }
-  if (tree->right != NULL) {
-    right = remove(tree->right);
-    if(right == NULL) tree->right = NULL;
+    tree->left = remove(tree->left);
   }
 
-  if (left == NULL && right == NULL) {
+  if (tree->right != NULL) {
+    tree->right = remove(tree->right);
+  }
+
+  if (tree->value == 0 && tree->left == NULL && tree->right == NULL) {
     return NULL;
   } else {
     return tree;
