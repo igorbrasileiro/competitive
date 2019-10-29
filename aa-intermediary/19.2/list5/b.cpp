@@ -1,24 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> kmp(string s) {
-  int n = s.length();
-  vector<int> pf(n);
-  int j = 0;
-  for(int i = 1; i < n; i++) {
-    j = pf[i-1];
-    while(j && s[j] != s[i])
-      j = pf[j - 1];
-    
-    if(s[i] == s[j])
-      j++;
-
-    pf[i] = j;
-  }
-
-  return pf;
-}
-
 vector<int> z_function(string s) {
     int n = (int) s.length();
     vector<int> z(n);
@@ -37,13 +19,14 @@ int main() {
   string s;
   getline(cin, s);
   vector<int> pf = z_function(s);
-  printf("%s\n", s.c_str());
-  for(auto v: pf) printf("%d, ", v);
-  cout << endl;
+
   int maxi = *max_element(pf.begin(), pf.end());
+
   cout << maxi << endl;
   vector<int> counts(maxi + 1);
+
   int matches = 0;
+
   for(auto v: pf) {
     if(v != 0) {
       if(!counts[v]) matches++;

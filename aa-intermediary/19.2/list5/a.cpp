@@ -1,19 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//kmp prefix-function code by cp-algorithm
-vector<int> prefix_function(string s) {
-    int n = (int)s.length();
-    vector<int> pi(n);
-    for (int i = 1; i < n; i++) {
-        int j = pi[i-1];
-        while (j > 0 && s[i] != s[j])
-            j = pi[j-1];
-        if (s[i] == s[j])
-            j++;
-        pi[i] = j;
+vector<int> KMP(string s){
+  vector<int> pf(s.length() + 1);
+  int now;
+
+  pf[0] = now = -1;
+
+  for(int i = 1; i < s.length(); i++) {
+    while(now != -1 && s[i]!=s[now+1]) {
+      now = pf[now];
     }
-    return pi;
+
+    if(s[i] == s[now+1]) {
+      pf[i] = ++now;
+    } else {
+      pf[i]= -1;
+    }
+  }
+
+  return pf;
 }
 
 
@@ -22,16 +28,27 @@ vector<int> prefix_function(string s) {
 int main() {
   string s;
   getline(cin, s);
-  vector<int> pf = prefix_function(s);
-  bool hasFound = false;
-  int v;
-  int size = pf.size();
+  int size = s.length();
+  vector<int> pf = KMP(s);
+
+  int maxi = pf[size - 1];
+  int found = pf[maxi];
+
+  if(maxi == -1) {
+    found = -1;
+  }
   
+  for (int i = 0; i < size - 1; i++) {
+    if(pf[i] == maxi) {
+      found = maxi;
+    }
+  }
 
-  for(auto v: pf) printf("%d, ", v);
-  for(int i = size - 1; i >= 0; i--) {} 
-
-  if (!hasFound) printf("Just a legend");
+  if (found == -1) {
+    printf("Just a legend\n");
+  } else {
+    cout << s.substr(0, found+1) << endl;
+  }
   
   return EXIT_SUCCESS;
 }
